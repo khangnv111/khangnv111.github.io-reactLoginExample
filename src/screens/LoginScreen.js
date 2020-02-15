@@ -87,7 +87,7 @@ export default function LoginScreen({navigation}) {
                                             <Button color="primary" style={styles.createButton}>
                                                 <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                                                     SIGN IN
-                        </Text>
+                                                </Text>
                                             </Button>
                                         </Block>
                                     </KeyboardAvoidingView>
