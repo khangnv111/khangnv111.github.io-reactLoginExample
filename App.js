@@ -6,16 +6,17 @@ import { Provider as AuthProvider } from './src/context/AuthContext';
 import { setNavigator } from './src/navigationRef';
 
 import LoginScreen from './src/screens/LoginScreen';
-import RegisterScreen from './src/screens/RegisterScreen';  
-import HomeScreen from './src/screens/HomeScreen';
+import RegisterScreen from './src/screens/RegisterScreen';   
+import ResolveAuth from './src/context/ResolveAuth';
+import Screens from './src/navigation/Screens';
 
 const switchNavigator = createSwitchNavigator({
-  //ResolveAuth: ResolveAuthScreen,
+  ResolveAuth: ResolveAuth,
   loginFlow: createStackNavigator({
     Login: LoginScreen,
     Register: RegisterScreen,  
   }), 
-  mainFlow: HomeScreen
+  mainFlow: Screens
 });
 
 const App = createAppContainer(switchNavigator);

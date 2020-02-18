@@ -22,6 +22,8 @@ const signin = dispatch => {
     return async ({ email, password }) => {
         try {
             const response = await trackApi.post('/signin', { email, password });
+            console.log(response.data);
+
             await AsyncStorage.setItem('token', response.data.token);
             dispatch({ type: 'signin', payload: response.data.token });
 
@@ -31,6 +33,19 @@ const signin = dispatch => {
             dispatch({ type: 'add_error', payload: 'Some thing went wrong with sign in' });
         }
     };
+};
+
+
+const tryLocalSignin = dispatch => async () => {
+    const token = await AsyncStorage.getItem('token');
+    console.log('token: ', token);
+    if (token) {
+        dispatch({ type: 'signin', payload: token });
+        navigate('mainFlow');
+    }
+    else {
+        navigate('Signup');
+    }
 };
 
 const signout = dispatch => {
@@ -43,6 +58,6 @@ const signout = dispatch => {
 
 export const { Provider, Context } = CreateDataContext(
     authReducer,
-    { signin, signout},
+    { signin, signout, tryLocalSignin},
     { toke: null, errorMessage: '' }
 );

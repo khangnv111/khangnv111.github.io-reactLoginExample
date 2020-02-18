@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import {
     StyleSheet,
     ImageBackground,
@@ -8,15 +8,20 @@ import {
     TouchableWithoutFeedback,
     Keyboard
 } from "react-native";
-import { Block, Checkbox, Text, theme } from "galio-framework";
-
+import { Block, Checkbox, Text, theme } from "galio-framework"; 
 import { Button, Icon, Input } from "../components";
 import { Images, argonTheme } from "../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Context as AuthContext } from '../context/AuthContext';
 
 const { width, height } = Dimensions.get("screen");
 
-export default function LoginScreen({navigation}) {
+export default function LoginScreen({ navigation }) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const { state, signin } = useContext(AuthContext);
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <Block flex middle>
@@ -40,11 +45,14 @@ export default function LoginScreen({navigation}) {
                                         behavior="padding"
                                         enabled
                                     >
-
+                                        <Block row width={width * 0.75}>
+                                            {state.errorMessage ? (<Text style={styles.errorMessage}>{state.errorMessage}</Text>) : null}
+                                        </Block>
                                         <Block width={width * 0.8} style={{ marginBottom: 15 }}>
                                             <Input
                                                 borderless
                                                 placeholder="Email"
+                                                value={email} onChangeText={setEmail}
                                                 autoCapitalize='none'
                                                 autoCorrect={false}
                                                 iconContent={
@@ -62,6 +70,8 @@ export default function LoginScreen({navigation}) {
                                             <Input
                                                 password
                                                 borderless
+                                                value={password}
+                                                onChangeText={setPassword}
                                                 placeholder="Password"
                                                 autoCapitalize='none'
                                                 autoCorrect={false}
@@ -84,12 +94,14 @@ export default function LoginScreen({navigation}) {
 
                                         </Block>
                                         <Block middle>
-                                            <Button color="primary" style={styles.createButton}>
+                                            <Button color="primary" style={styles.createButton} 
+                                                onPress={() => signin({ email, password })}>
                                                 <Text bold size={14} color={argonTheme.COLORS.WHITE}>
                                                     SIGN IN
                                                 </Text>
                                             </Button>
                                         </Block>
+
                                     </KeyboardAvoidingView>
                                 </Block>
                             </Block>
